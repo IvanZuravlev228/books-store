@@ -1,8 +1,8 @@
 package ivan.booksstore;
 
-import java.math.BigDecimal;
 import ivan.booksstore.model.Book;
 import ivan.booksstore.service.BookService;
+import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
