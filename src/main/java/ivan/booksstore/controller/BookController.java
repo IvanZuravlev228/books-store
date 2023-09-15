@@ -5,6 +5,7 @@ import ivan.booksstore.dto.BookSearchParameters;
 import ivan.booksstore.dto.CreateBookRequestDto;
 import ivan.booksstore.service.BookService;
 import java.util.List;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,13 +34,13 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<BookDto> saveNewBook(@RequestBody CreateBookRequestDto dto) {
+    public ResponseEntity<BookDto> saveNewBook(@RequestBody  @Valid CreateBookRequestDto dto) {
         return new ResponseEntity<>(bookService.save(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<BookDto> update(@PathVariable Long id,
-                                          @RequestBody CreateBookRequestDto update) {
+                                          @RequestBody @Valid CreateBookRequestDto update) {
         return new ResponseEntity<>(bookService.update(id, update), HttpStatus.OK);
     }
 
