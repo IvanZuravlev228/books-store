@@ -9,6 +9,8 @@ import ivan.booksstore.repository.SpecificationBuilder;
 import ivan.booksstore.repository.book.BookRepository;
 import ivan.booksstore.service.BookService;
 import ivan.booksstore.service.mapper.BookMapper;
+
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -28,8 +30,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> findAll() {
-        return bookRepository.findAll()
+    public List<BookDto> findAll(Pageable pageable) {
+        return bookRepository.findAll(pageable)
                 .stream()
                 .map(bookMapper::toDto)
                 .collect(Collectors.toList());

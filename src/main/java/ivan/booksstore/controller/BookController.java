@@ -1,5 +1,7 @@
 package ivan.booksstore.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import ivan.booksstore.dto.BookDto;
 import ivan.booksstore.dto.BookSearchParameters;
 import ivan.booksstore.dto.CreateBookRequestDto;
@@ -7,6 +9,7 @@ import ivan.booksstore.service.BookService;
 import java.util.List;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,38 +21,45 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Book controller", description = "Endpoints for mapping book")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
     private final BookService bookService;
 
+    @Operation(summary = "Get all books by sorting and pagination")
     @GetMapping
-    public ResponseEntity<List<BookDto>> getAllBooks() {
-        return new ResponseEntity<>(bookService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<BookDto>> getAllBooks(Pageable pageable) {
+        return new ResponseEntity<>(bookService.findAll(pageable), HttpStatus.OK);
     }
 
+    @Operation(summary = "Get book by id")
     @GetMapping("/{id}")
     public ResponseEntity<BookDto> getBookById(@PathVariable Long id) {
         return new ResponseEntity<>(bookService.getBookById(id), HttpStatus.OK);
     }
 
+    @Operation(summary = "Add a new book")
     @PostMapping
     public ResponseEntity<BookDto> saveNewBook(@RequestBody  @Valid CreateBookRequestDto dto) {
         return new ResponseEntity<>(bookService.save(dto), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Update book")
     @PutMapping("/{id}")
     public ResponseEntity<BookDto> update(@PathVariable Long id,
                                           @RequestBody @Valid CreateBookRequestDto update) {
         return new ResponseEntity<>(bookService.update(id, update), HttpStatus.OK);
     }
 
+    @Operation(summary = "Find books by authors and prices")
     @GetMapping("/search")
     public ResponseEntity<List<BookDto>> search(BookSearchParameters searchParameters) {
         return new ResponseEntity<>(bookService.search(searchParameters), HttpStatus.OK);
     }
 
+    @Operation(summary = "Delete book by id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         bookService.deleteById(id);
